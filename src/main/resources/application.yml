@@ -1,0 +1,111 @@
+# Web服务器配置
+server:
+  # 端口号
+  port: 8989
+
+
+# Spring相关配置
+spring:
+  # 数据源配置
+  datasource:
+    # 数据库连接URL（注意：需按照自己的实际情况填写ip、端口及数据库名）
+    url: jdbc:mysql://localhost:3306/briup_cms?useSSL=false&useUnicode=true&characterEncoding=utf8&serverTimeZone=Asia/Shanghai
+    # 数据库连接账号
+    username: root
+    # 数据库连接密码
+    password: root
+
+# MyBatis相关配置
+mybatis:
+  # 映射文件所在路径
+  mapper-locations: classpath:mappers/*Mapper.xml
+  configuration:
+    # 开启MyBatis执行日志
+    log-impl: org.apache.ibatis.logging.stdout.StdOutImpl
+
+# MyBatisPlus相关配置
+mybatis-plus:
+  global-config:
+    db-config:
+      # 逻辑删除中表示删除状态的字段值（默认为1）
+      logic-delete-value: 1
+      # 逻辑删除中表示未删除状态的字段值（默认为0）
+      logic-not-delete-value: 0
+      # 定义表示逻辑删除状态的字段名（可以通过TableLogic注解声明）
+      logic-delete-field: deleted
+  configuration:
+    # 开启下划线命名和驼峰命名之间的自动映射转换功能
+    map-underscore-to-camel-case: true
+
+# 日志相关配置
+logging:
+  # 日志输出级别
+  level:
+    root: info
+
+# 自定义配置
+briup:
+  config:
+    ## OSS七牛云存储配置 ##
+    # 桶名称（存储空间名称，自己写自己的不要抄我的）
+    oss-bucket: kaivvv
+    # 公钥（七牛云控制台描述的AK）
+    oss-access-key: Yep2nbKdemR8Be8GLtJjOpCLMbHwdTc_C13Tx3Zr
+    # 私钥（七牛云控制台描述的SK）
+    oss-secret-key: P410Bdfcwy5ZFFt8_NIc_Rfi1l76JUlP_iS6Ja4r
+    # URL固定前缀（手动补全前面的http://和最后面的/）
+    oss-base-url: http://s757lxekj.hn-bkt.clouddn.com/
+    # 默认文件名称
+    oss-default-file-name: noname.jpg
+
+    ## 加密相关配置 ##
+    # 加密强度
+    security-strength: 6
+    # 干扰因子（使用随机UUID生成）
+    security-secret: ${random.uuid}
+
+    ## 跨域配置 ##
+    # 允许跨域访问的资源
+    cors-mapping: "/**"
+    # 允许跨域访问的客户端源
+    cors-allowed-origins: "*"
+    # 允许跨域访问使用的HTTP请求方法
+    cors-allowed-methods:
+      - "GET"
+      - "POST"
+      - "PUT"
+      - "DELETE"
+    # 允许跨域访问携带的HTTP请求头部
+    cors-allowed-headers: "*"
+    # 是否允许携带Cookie
+    cors-allow-credentials: false
+    # 预检请求缓存有效时长（单位：秒）
+    cors-max-age: 3600
+
+    ## 访问权限配置 ##
+    # 需要拦截的请求URL
+    auth-include-path-patterns: /**
+    # 不需要拦截的请求URL
+    auth-exclude-path-patterns:
+      - /login
+      - /logout
+      - /upload
+      - /auth/category/**
+      - /auth/log/**
+      - /slideshow/**
+
+    ## 导出、下载相关配置 ##
+    # 导出Excel使用的编码格式
+    excel-export-encoding: UTF-8
+    # 导出Excel的文件类型（Office2003之前对应XLS，Office2003之后对应XLSX）
+    excel-export-file-type: XLSX
+    # 导出Excel时使用的Content-Type头部字段值
+    excel-export-content-type: application/octet-stream;charset=${briup.config.excel-export-encoding}
+    # 导出Excel时使用的Content-Disposition头部字段值
+    excel-export-content-disposition: attachment;filename=%s
+
+    ## 其他配置 ##
+    # 默认时间格式（解析请求参数时使用）
+    default-date-pattern: yyyy-MM-dd HH:mm:ss
+    # IP查询服务地址
+    ip-query-server-host: http://whois.pconline.com.cn/ipJson.jsp
